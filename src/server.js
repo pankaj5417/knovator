@@ -4,7 +4,7 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 const { register, login } = require("./controllers/auth.controller");
-const postsController=require("./controllers/posts")
+const postsController=require("./controllers/post.controller.js")
 
 app.use(express.json());
 app.use("/posts",postsController)
