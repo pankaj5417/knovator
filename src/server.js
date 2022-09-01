@@ -4,8 +4,10 @@ const mongoose = require("mongoose");
 
 require("dotenv").config();
 const { register, login } = require("./controllers/auth.controller");
+const postsController=require("./controllers/posts")
 
 app.use(express.json());
+app.use("/posts",postsController)
 
 app.post("/register", register);
 app.post("/login", login);
