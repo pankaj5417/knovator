@@ -1,12 +1,20 @@
-require("dotenv").config();
 const jwt = require("jsonwebtoken");
+const { check, validationResult } = require("express-validator");
+require("dotenv").config();
+
 const User = require("../models/user.model");
 
 const newToken = (user) => {
-  return jwt.sign({ user: user }, process.env.JWT_ACCESS_KEY);
+  return jwt.sign({ user: user }, "pankaj1234");
 };
 
 const register = async (req, res) => {
+
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    res.json(errors);
+  }
   try {
     // check if the email address provided already exist
     let user = await User.findOne({ email: req.body.email }).lean().exec();
@@ -18,7 +26,7 @@ const register = async (req, res) => {
         message: " Please provide a different email address",
       });
 
-    // else we will create the user we will hash the password as plain text password is harmful
+   
     user = await User.create(req.body);
 
     // we will create the token
@@ -32,6 +40,11 @@ const register = async (req, res) => {
 };
 
 const login = async (req, res) => {
+  const errors = validationResult(req);
+
+  if (!errors.isEmpty()) {
+    res.json(errors);
+  }
   try {
     // check if the email address provided already exist
     let user = await User.findOne({ email: req.body.email });

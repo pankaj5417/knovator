@@ -13,9 +13,9 @@ app.use("/posts", postsController);
 app.post(
   "/register",
   [
-    check("email", "Email length should be 10 to 30 characters")
+    check("email", "Please provide a valid email")
       .isEmail()
-      .isLength({ min: 10, max: 30 }),
+      ,
     check("name", "Name length should be 10 to 20 characters").isLength({
       min: 10,
       max: 20,
@@ -34,44 +34,29 @@ app.post(
       }
     }),
   ],
-  (req, res) => {
-    const errors = validationResult(req);
+  register,
 
-    if (!errors.isEmpty()) {
-      res.json(errors);
-    } else {
-      res.send("Successfully validated");
-    }
-  },
-  register
+ 
 );
 app.post(
   "/login",
   [
     check("email", "Email length should be 10 to 30 characters")
       .isEmail()
-      .isLength({ min: 10, max: 30 }),
+      ,
 
-      check("password").custom(async (value) => {
-        const regex =
-          /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(value);
-        if (!regex) {
-          throw new Error(
-            "Password must be of 8 character,should contain one special character and must start with capital letter"
-          );
-        }
-      }),
+    check("password").custom(async (value) => {
+      const regex =
+        /^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[^\w\s]).{8,}$/.test(value);
+      if (!regex) {
+        throw new Error(
+          "Password must be of 8 character,should contain one special character and must start with capital letter"
+        );
+      }
+    }),
   ],
-  (req, res) => {
-    const errors = validationResult(req);
-
-    if (!errors.isEmpty()) {
-      res.json(errors);
-    } else {
-      res.send("Successfully validated");
-    }
-  },
-  login
+  login,
+ 
 );
 
 mongoose.connect(process.env.MONGO_URL, (err) => {

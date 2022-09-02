@@ -6,7 +6,12 @@ const postSchema=new mongoose.Schema({
     body: { type: String, required: true},
     createdby:{},
     status:{},
-    geolocation:[]
+    geolocation:[],
+    user: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "userdb",
+        required: false,
+      }
 
 },
 {
