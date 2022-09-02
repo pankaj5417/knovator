@@ -9,7 +9,6 @@ const newToken = (user) => {
 };
 
 const register = async (req, res) => {
-
   const errors = validationResult(req);
 
   if (!errors.isEmpty()) {
@@ -26,7 +25,6 @@ const register = async (req, res) => {
         message: " Please provide a different email address",
       });
 
-   
     user = await User.create(req.body);
 
     // we will create the token

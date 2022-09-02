@@ -5,6 +5,7 @@ const Post = require("../models/post.model");
 const authenticate = require("../middlewares/authenticate");
 
 const router = express.Router();
+//get post
 
 router.get("/", authenticate, async (req, res) => {
   try {
@@ -16,30 +17,7 @@ router.get("/", authenticate, async (req, res) => {
   }
 });
 
-// retrieve post using latitude and longitude
-
-// router.post("/", authenticate, async (req, res) => {
-//   try {
-//     const post = await Post.find({ geolocation: req.body.geolocation }).exec();
-
-//     return res.status(200).send(post);
-//   } catch (e) {
-//     res.status(500).send({ message: e.message, status: "failed" });
-//   }
-// });
-
-// show the count of active and inactive posts
-
-// router.post("/", authenticate, async (req, res) => {
-//   try {
-//     const activePost = await Post.find.count({ status: active }).exec();
-//     const inactivePost = await Post.find.count({ status: inactive }).exec();
-
-//     return res.status(200).send({ activePost, inactivePost });
-//   } catch (e) {
-//     res.status(500).send({ message: e.message, status: "failed" });
-//   }
-// });
+// create a post
 
 router.post("/", authenticate, async (req, res) => {
   try {
@@ -62,16 +40,7 @@ router.post("/", authenticate, async (req, res) => {
   }
 });
 
-// router.post("/", async (req, res) => {
-//   try {
-//     const post = await Post.create(req.body);
-
-//     return res.status(201).send(post);
-//   } catch (e) {
-//     return res.status(500).json({ message: e.message, status: "Failed" });
-//   }
-// });
-
+// get single Post
 router.get("/:id", async (req, res) => {
   try {
     const post = await Post.findById(req.params.id).lean().exec();
@@ -96,16 +65,7 @@ router.patch("/:id", async (req, res) => {
   }
 });
 
-router.delete("/:id", async (req, res) => {
-  try {
-    const post = await Post.findByIdAndDelete(req.params.id).lean().exec();
-
-    return res.send(post);
-  } catch (e) {
-    return res.status(500).json({ message: e.message, status: "Failed" });
-  }
-});
-
+// Update post
 router.put("/:id", async (req, res) => {
   try {
     const post = await PostModel.findById(req.params.id);
@@ -142,6 +102,32 @@ router.delete("/:id", async (req, res) => {
     return res.status(403).json(err);
   }
 });
+
+// retrieve post using latitude and longitude
+
+router.post("/geolocation", authenticate, async (req, res) => {
+  try {
+    const post = await Post.find({ geolocation: req.body.geolocation }).exec();
+
+    return res.status(200).send(post);
+  } catch (e) {
+    res.status(500).send({ message: e.message, status: "failed" });
+  }
+});
+
+// show the count of active and inactive posts
+
+router.get("/statusCount", authenticate, async (req, res) => {
+  try {
+    const activePost = await Post.find({ status: "active" }).count();
+    const inactivePost = await Post.find({ status: "inactive" }).count();
+
+    return res.status(200).send({ activePost, inactivePost });
+  } catch (e) {
+    res.status(500).send({ message: e.message, status: "failed" });
+  }
+});
+
 
 
 module.exports = router;
