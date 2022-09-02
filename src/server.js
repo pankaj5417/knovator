@@ -6,7 +6,7 @@ const { check, validationResult } = require("express-validator");
 require("dotenv").config();
 const { register, login } = require("./controllers/auth.controller");
 const postsController = require("./controllers/post.controller.js");
-
+const mongourl="mongodb+srv://pankaj541:pk123@cluster0.9tum5.mongodb.net/ecommerceapp?retryWrites=true&w=majority"
 app.use(express.json());
 app.use("/posts", postsController);
 
@@ -59,7 +59,7 @@ app.post(
  
 );
 
-mongoose.connect(process.env.MONGO_URL, (err) => {
+mongoose.connect(mongourl, (err) => {
   if (err) {
     console.log(err);
   } else console.log("Connected to MongoDB");

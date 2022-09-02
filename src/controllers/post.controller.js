@@ -117,7 +117,7 @@ router.post("/geolocation", authenticate, async (req, res) => {
 
 // show the count of active and inactive posts
 
-router.get("/statusCount", authenticate, async (req, res) => {
+router.post("/status", authenticate, async (req, res) => {
   try {
     const activePost = await Post.find({ status: "active" }).count();
     const inactivePost = await Post.find({ status: "inactive" }).count();

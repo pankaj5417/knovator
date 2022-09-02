@@ -3,7 +3,7 @@ require("dotenv").config();
 
 const verifyToken = (token) => {
   return new Promise((resolve, reject) => {
-    jwt.verify(token, "pankaj1234", function (err, token) {
+    jwt.verify(token,"pankaj1234", function (err, token) {
       if (err) return reject(err);
       return resolve(token);
     });
